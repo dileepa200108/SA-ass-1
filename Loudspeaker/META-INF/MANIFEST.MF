@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Loudspeaker
+Bundle-SymbolicName: Loudspeaker
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: com.cafe.juiceconsumer.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-17
+Automatic-Module-Name: Loudspeaker
+Import-Package: org.osgi.framework;version="1.3.0"
+Require-Bundle: JuiceMaker;bundle-version="1.0.0"
+Bundle-ActivationPolicy: lazy
+Export-Package: com.cafe.juiceconsumer
