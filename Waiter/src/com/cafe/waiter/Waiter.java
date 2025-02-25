@@ -8,7 +8,7 @@ import org.osgi.framework.ServiceReference;
 
 import java.util.Scanner;
 
-public class Activator implements BundleActivator {
+public class Waiter implements BundleActivator {
 
     private ServiceReference<CoffeeOrderListener> serviceReference;
 
@@ -20,7 +20,7 @@ public class Activator implements BundleActivator {
         serviceReference = context.getServiceReference(CoffeeOrderListener.class);
         
         if (serviceReference != null) {
-            // Get the service instance (CoffeeOrderListener, which is CoffeeOrderScreen)
+            // Get the service instance
             CoffeeOrderListener listener = context.getService(serviceReference);
             if (listener != null) {
                 // Simulate interaction: Taking order from user

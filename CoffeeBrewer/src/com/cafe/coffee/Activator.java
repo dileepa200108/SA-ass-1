@@ -3,20 +3,22 @@ package com.cafe.coffee;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
+import com.cafe.api.CoffeeService;
 
 public class Activator implements BundleActivator {
-    private ServiceRegistration<?> serviceRegistration;
+
+    private ServiceRegistration<CoffeeService> registration;
 
     @Override
     public void start(BundleContext context) throws Exception {
         CoffeeService coffeeService = new CoffeeBrewer();
-        serviceRegistration = context.registerService(CoffeeService.class, coffeeService, null);
-        System.out.println("Coffee Service Registered");
+        registration = context.registerService(CoffeeService.class, coffeeService, null);
+        System.out.println("✅ Coffee Service Registered");
     }
 
     @Override
     public void stop(BundleContext context) throws Exception {
-        serviceRegistration.unregister();
-        System.out.println("Coffee Service Unregistered");
+        registration.unregister();
+        System.out.println("❌ Coffee Service Unregistered");
     }
 }
