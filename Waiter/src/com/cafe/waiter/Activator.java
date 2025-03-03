@@ -8,6 +8,8 @@ import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Activator implements BundleActivator {
@@ -15,6 +17,10 @@ public class Activator implements BundleActivator {
     private ServiceReference<CoffeeOrderListener> coffeeServiceReference;
     private ServiceReference<JuiceOrderListener> juiceServiceReference;
     private ServiceReference<CupCakeOrderListener>cupCakeServiceReference;
+    
+    
+    //available cupcake flavors
+    private static final List<String> AVAILABLE_FLAVORS = Arrays.asList("vanilla", "chocolate", "strawberry");
 
     @Override
     public void start(BundleContext context) throws Exception {
@@ -61,8 +67,19 @@ public class Activator implements BundleActivator {
                     System.out.println("✅ Waiter - Order for " + customerName + " is ready: Juice");
                 }else if(drinkChoice.equalsIgnoreCase("CupCake")){
                 	
-                	System.out.print("🧁 What flavor would you like for your cupcake? ");
-                    String flavor = scanner.nextLine();
+                	String flavor = "";
+                    boolean validFlavor = false;
+                	
+                    while (!validFlavor) {
+                        System.out.print("🧁 What flavor would you like for your cupcake? (vanilla, chocolate, or strawberry): ");
+                        flavor = scanner.nextLine().toLowerCase();
+                        
+                        if (AVAILABLE_FLAVORS.contains(flavor)) {
+                            validFlavor = true;
+                        } else {
+                            System.out.println("❌ Sorry, we only offer vanilla, chocolate, and strawberry cupcakes.");
+                        }
+                    }
                 	
                     System.out.println("🧁 CupCake Baker is making a " + flavor + " cupcake for " + customerName);
                 	 cupCakeListener.onCupCakeOrder(customerName,flavor);
