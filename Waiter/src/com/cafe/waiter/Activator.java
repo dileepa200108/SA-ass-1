@@ -1,6 +1,7 @@
 package com.cafe.waiter;
 
 import com.cafe.api.CoffeeOrderListener;
+import com.cafe.api.CupCakeOrderListener;
 import com.cafe.api.JuiceOrderListener;
 
 import org.osgi.framework.BundleActivator;
@@ -13,6 +14,7 @@ public class Activator implements BundleActivator {
 
     private ServiceReference<CoffeeOrderListener> coffeeServiceReference;
     private ServiceReference<JuiceOrderListener> juiceServiceReference;
+    private ServiceReference<CupCakeOrderListener>cupCakeServiceReference;
 
     @Override
     public void start(BundleContext context) throws Exception {
@@ -23,20 +25,24 @@ public class Activator implements BundleActivator {
 
         // Get the service reference for JuiceOrderListener
         juiceServiceReference = context.getServiceReference(JuiceOrderListener.class);
+        
+        //get the service reference for CupCakeOrderListner
+        cupCakeServiceReference = context.getServiceReference(CupCakeOrderListener.class);
 
-        if (coffeeServiceReference != null && juiceServiceReference != null) {
+        if (coffeeServiceReference != null && juiceServiceReference != null && cupCakeServiceReference != null) {
             // Get the service instances (CoffeeOrderListener, JuiceOrderListener)
             CoffeeOrderListener coffeeListener = context.getService(coffeeServiceReference);
             JuiceOrderListener juiceListener = context.getService(juiceServiceReference);
+            CupCakeOrderListener cupCakeListener = context.getService(cupCakeServiceReference);
 
-            if (coffeeListener != null && juiceListener != null) {
+            if (coffeeListener != null && juiceListener != null && cupCakeListener != null) {
                 // Simulate interaction: Taking order from user
                 Scanner scanner = new Scanner(System.in);
 
                 System.out.print("👤 Enter your name: ");
                 String customerName = scanner.nextLine();
 
-                System.out.print("☕🍹 What would you like to drink (Coffee or Juice)? ");
+                System.out.print("☕🍹 What would you like to drink (Coffee or Juice or CupCake)? ");
                 String drinkChoice = scanner.nextLine();
 
                 if (drinkChoice.equalsIgnoreCase("Coffee")) {
@@ -53,6 +59,16 @@ public class Activator implements BundleActivator {
                     juiceListener.onJuiceOrder(customerName);
 
                     System.out.println("✅ Waiter - Order for " + customerName + " is ready: Juice");
+                }else if(drinkChoice.equalsIgnoreCase("CupCake")){
+                	
+                	System.out.print("🧁 What flavor would you like for your cupcake? ");
+                    String flavor = scanner.nextLine();
+                	
+                    System.out.println("🧁 CupCake Baker is making a " + flavor + " cupcake for " + customerName);
+                	 cupCakeListener.onCupCakeOrder(customerName,flavor);
+                	 System.out.println("✅ Waiter - Order for " + customerName + " is ready: " + flavor + " CupCake");
+                }else {
+                	 System.out.println("❌ Sorry, we don't offer that item. Please choose Coffee, Juice, or CupCake.");
                 }
             }
         }
